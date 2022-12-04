@@ -3,7 +3,7 @@ import './App.css'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
 import Home from './Home'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signOut} from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 import { createContext, useEffect, useState } from 'react'
 import { auth } from './firebase'
 
@@ -14,6 +14,7 @@ function App() {
   const navigate = useNavigate()
 
   const createUser = (email, password) => createUserWithEmailAndPassword(auth, email,password)
+  const signIn = (email, password) => signInWithEmailAndPassword(auth, email, password)
   const logout = async () => {
     await signOut(auth)
     navigate('/')
@@ -31,7 +32,7 @@ function App() {
         <p>
           Commerce App
         </p>
-        <UserContext.Provider value={{user, createUser, logout}}>
+        <UserContext.Provider value={{user, createUser, logout, signIn}}>
           <Routes>
             <Route path='/' element={user?<Home />:<Navigate to="/signin" replace/>} />
             <Route path='/signup' element={<SignUp />} />
